@@ -169,7 +169,7 @@ void MyAVLTree<Key, Value>::insert(const Key & k, const Value & v)
         }
     }
     if(tempParent == nullptr){
-        tempParent = newNode;
+        root = newNode;
     }
     else if (k < tempParent->InOrderID) {
         tempParent->left = newNode;
