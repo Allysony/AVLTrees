@@ -102,7 +102,10 @@ MyAVLTree<Key,Value>::MyAVLTree()
 template<typename Key, typename Value>
 size_t MyAVLTree<Key, Value>::size() const noexcept
 {
-	return 0; // stub
+    if(root== nullptr){
+        return 0;
+    }
+	return 1 + size_t(root->left) + size_t(root->right) ;
 }
 
 template<typename Key, typename Value>
