@@ -19,7 +19,12 @@ class ElementNotFoundException : public RuntimeException
 public:
 	ElementNotFoundException(const std::string & err) : RuntimeException(err) {}
 };
-
+template<typename Value>
+struct Node {
+    Value data;
+    Node *left = nullptr;
+    Node *right = nullptr;
+};
 
 template<typename Key, typename Value>
 class MyAVLTree
@@ -27,6 +32,8 @@ class MyAVLTree
 private:
 	// fill in private member data here
 	// If you need to declare private functions, do so here too.
+	Node<Value> *root;
+	Key InOrderID;
 
 public:
 	MyAVLTree();
