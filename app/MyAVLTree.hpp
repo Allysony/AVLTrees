@@ -102,10 +102,7 @@ MyAVLTree<Key,Value>::MyAVLTree()
 template<typename Key, typename Value>
 size_t MyAVLTree<Key, Value>::size() const noexcept
 {
-    if(root == nullptr){
-        return 0;
-    }
-	return 1 + size_t(root->left) + size_t(root->right) ;
+    return helperFuncSize(root);
 }
 
 template<typename Key, typename Value>
@@ -169,9 +166,14 @@ std::vector<Key> MyAVLTree<Key, Value>::postOrder() const
 	return foo; 
 }
 
+template<typename Key, typename Value>
+ size_t helperFuncSize(Node<Key, Value>* temp){
+    if(temp == nullptr){
+        return 0;
+    }
+    return 1 + size(temp->left) + size(temp->right) ;
 
-
-
+ }
 
 
 
