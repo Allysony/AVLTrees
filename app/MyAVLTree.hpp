@@ -208,7 +208,7 @@ template<typename Key, typename Value>
     if(temp == nullptr){
         return 0;
     }
-    return 1 + size(temp->left) + size(temp->right) ;
+    return 1 + helperFuncSize(temp->left) + helperFuncSize(temp->right) ;
 
  }
 
