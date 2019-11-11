@@ -143,12 +143,12 @@ void MyAVLTree<Key, Value>::insert(const Key & k, const Value & v)
     while (temp != nullptr)
     {
         tempParent = temp;
-        if (k < temp->InOrderID && temp->left != nullptr)
+        if (k < temp->InOrderID)
         {
             temp = temp->left;
         }
 
-        else if (k > temp->InOrderID && temp->right != nullptr)
+        else if (k > temp->InOrderID)
         {
             temp = temp->right;
         }
