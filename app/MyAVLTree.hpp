@@ -150,7 +150,9 @@ const Value & MyAVLTree<Key, Value>::find(const Key & k) const
 template<typename Key, typename Value>
 void MyAVLTree<Key, Value>::insert(const Key & k, const Value & v)
 {
-    Node<Key, Value> *newNode = new Node(k, v);
+    Node<Key, Value> *newNode = new Node<Key, Value>;
+    newNode->Key = k;
+    newNode->Value = v;
 	Node<Key, Value> *temp = root;
 	Node<Key, Value> *tempParent = nullptr;
     while (temp != nullptr)
