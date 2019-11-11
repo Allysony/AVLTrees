@@ -136,7 +136,7 @@ bool MyAVLTree<Key, Value>::contains(const Key &k) const
 template<typename Key, typename Value>
 Value & MyAVLTree<Key, Value>::find(const Key & k)
 {
-	Value v;
+	Value v = 0;
 	return v; // not only a stub, but a terrible idea.
 }
 
