@@ -1,3 +1,12 @@
+/**
+ * @author Allyson Yamasaki, Jullia Bautista
+ * Date Created: Nov 11, 2019
+ *
+ * Project 3
+ *
+ */
+
+
 #ifndef __PROJ_THREE_AVL_HPP
 #define __PROJ_THREE_AVL_HPP
 
