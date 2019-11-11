@@ -33,7 +33,7 @@ class MyAVLTree
 private:
 	// fill in private member data here
 	// If you need to declare private functions, do so here too.
-	Node<Key, Value> *root;
+	Node<Key, Value> *root = nullptr;
 
 public:
 	MyAVLTree();
@@ -168,8 +168,8 @@ void MyAVLTree<Key, Value>::insert(const Key & k, const Value & v)
             temp = temp->right;
         }
     }
-    if(root == nullptr){
-        root = newNode;
+    if(tempParent == nullptr){
+        tempParent = newNode;
     }
     else if (k < tempParent->InOrderID) {
         tempParent->left = newNode;
