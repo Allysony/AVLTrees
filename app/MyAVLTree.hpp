@@ -108,14 +108,27 @@ size_t MyAVLTree<Key, Value>::size() const noexcept
 template<typename Key, typename Value>
 bool MyAVLTree<Key, Value>::isEmpty() const noexcept
 {
-	return true; // stub
+	return (root == nullptr);
 }
 
 
 template<typename Key, typename Value>
 bool MyAVLTree<Key, Value>::contains(const Key &k) const
 {
-	return false; // stub
+	Node<Key, Value> *tmpPtr = root;
+	while(tmpPtr != nullptr){
+	    if (tmpPtr->InOrderID == k){
+	        return true;
+	    }
+	    else if (k > root->InOrderID){
+	        tmpPtr = tmpPtr->right;
+	    }
+	    else{
+	        tmpPtr = tmpPtr->left;
+	    }
+	}
+	return false;
+
 }
 
 
