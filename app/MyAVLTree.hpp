@@ -65,8 +65,8 @@ public:
 	// find returns the value associated with the given key
 	// If !contains(k), this will throw an ElementNotFoundException
 	// There needs to be a version for const and non-const MyAVLTrees.
-	Value & find(const Key & k);
-	const Value & find(const Key & k) const;
+//	Value & find(const Key & k);
+//	const Value & find(const Key & k) const;
 
 	// Inserts the given key-value pair into 
 	// the tree and performs the AVL re-balance
@@ -133,19 +133,19 @@ bool MyAVLTree<Key, Value>::contains(const Key &k) const
 
 
 
-template<typename Key, typename Value>
-Value & MyAVLTree<Key, Value>::find(const Key & k)
-{
-	Value v = 0;
-	return v; // not only a stub, but a terrible idea.
-}
-
-template<typename Key, typename Value>
-const Value & MyAVLTree<Key, Value>::find(const Key & k) const
-{
-	Value v;
-	return v; // not only a stub, but a terrible idea.
-}
+//template<typename Key, typename Value>
+//Value & MyAVLTree<Key, Value>::find(const Key & k)
+//{
+//	Value v = 0;
+//	return v; // not only a stub, but a terrible idea.
+//}
+//
+//template<typename Key, typename Value>
+//const Value & MyAVLTree<Key, Value>::find(const Key & k) const
+//{
+//	Value v;
+//	return v; // not only a stub, but a terrible idea.
+//}
 
 template<typename Key, typename Value>
 void MyAVLTree<Key, Value>::insert(const Key & k, const Value & v)
