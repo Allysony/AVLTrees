@@ -26,6 +26,7 @@ struct Node {
     Key InOrderID;
     Node *left = nullptr;
     Node *right = nullptr;
+    Node *parent = nullptr;
 };
 
 template<typename Key, typename Value>
@@ -180,6 +181,14 @@ void MyAVLTree<Key, Value>::insert(const Key & k, const Value & v)
     {
         tempParent->right = newNode;
     }
+
+    newNode->parent = tempParent;
+
+    Node<Key, Value> *revTemp = tempParent;
+    while(revTemp != root){
+        rotate(revTemp);
+        revTemp = revTemp->parent;
+    }
 }
 
 
@@ -240,7 +249,7 @@ void rotate(Node<Key, Value>* parent){
     if(balanceFactor(parent) > 1){
         // tree's LEFT subtree is RIGHT heavy
         if(balanceFactor(parent->left) < -1){
-            // doubleRightRotation();
+            doubleRightRotation(parent);
         }
         else{
             singleRightRotation(parent);
@@ -250,7 +259,7 @@ void rotate(Node<Key, Value>* parent){
     else if(balanceFactor(parent) < -1){
         // tree's RIGHT subtree is LEFT heavy
         if(balanceFactor(parent->right) > 1){
-            // doubleLeftRotation();
+            doubleLeftRotation(parent);
         }
         else{
             singleLeftRotation(parent);
