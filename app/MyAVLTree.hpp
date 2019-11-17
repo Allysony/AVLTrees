@@ -215,6 +215,19 @@ template<typename Key, typename Value>
     return 1 + helperFuncSize(temp->left) + helperFuncSize(temp->right) ;
 
  }
+template<typename Key, typename Value>
+ size_t heightOfParent(Node<Key, Value>* temp){
+    if(temp == nullptr){
+        return 0;
+    }
+    return 1 + maximum(heightOfParent(temp->left), heightOfParent(temp->right)) ;
+ }
+size_t  maximum(size_t x, size_t y){
+    if (x > y){
+        return x;
+    }
+    return y;
+}
 
 
 
