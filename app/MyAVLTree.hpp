@@ -230,7 +230,7 @@ size_t  maximum(size_t x, size_t y){
     return y;
 }
 template<typename Key, typename Value>
-boolean needBalance(Node<Key, Value>* right, Node<Key, Value>* left){
+bool needBalance(Node<Key, Value>* right, Node<Key, Value>* left){
     return (abs(heightOfParent(right)-heightOfParent(left)) > 1);
 }
 
