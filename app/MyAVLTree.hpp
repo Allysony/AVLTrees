@@ -238,6 +238,7 @@ template<typename Key, typename Value>
 void rotate(Node<Key, Value>* parent){
     // tree is LEFT heavy
     if(balanceFactor(parent) > 1){
+        // tree's LEFT subtree is RIGHT heavy
         if(balanceFactor(parent->left) < -1){
             // doubleRightRotation();
         }
@@ -245,7 +246,9 @@ void rotate(Node<Key, Value>* parent){
             // singleRightRotation();
         }
     }
+    // tree is RIGHT heavy
     else if(balanceFactor(parent) < -1){
+        // tree's RIGHT subtree is LEFT heavy
         if(balanceFactor(parent->right) > 1){
             // doubleLeftRotation();
         }
