@@ -231,7 +231,7 @@ size_t  maximum(size_t x, size_t y){
 }
 template<typename Key, typename Value>
 size_t balanceFactor(Node<Key, Value>* parent){
-    return heightOfParent(parent->right) - heightOfParent(parent->left);
+    return heightOfParent(parent->left) - heightOfParent(parent->right);
 }
 
 
