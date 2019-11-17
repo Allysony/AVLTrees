@@ -243,7 +243,7 @@ void rotate(Node<Key, Value>* parent){
             // doubleRightRotation();
         }
         else{
-            // singleRightRotation();
+            singleRightRotation(parent);
         }
     }
     // tree is RIGHT heavy
@@ -253,10 +253,40 @@ void rotate(Node<Key, Value>* parent){
             // doubleLeftRotation();
         }
         else{
-            // singleLeftRotation();
+            singleLeftRotation(parent);
         }
     }
 }
+template<typename Key, typename Value>
+void singleRightRotation(Node<Key, Value>* parent){
+    Node<Key, Value> *tmpPtr = parent;
+    parent = tmpPtr->left;
+    parent->right = tmpPtr;
+}
+
+template<typename Key, typename Value>
+void singleLeftRotation(Node<Key, Value>* parent){
+    Node<Key, Value> *tmpPtr = parent;
+    parent = tmpPtr->right;
+    parent->left = tmpPtr;
+}
+
+template<typename Key, typename Value>
+void doubleLeftRotation(Node<Key, Value>* parent){
+    Node<Key, Value> *tmpPtr = parent;
+    parent->left = tmpPtr->left->right;
+    parent->left->left = tmpPtr->left;
+    singleLeftRotation(parent);
+}
+template<typename Key, typename Value>
+void doubleRightRotation(Node<Key, Value>* parent){
+    Node<Key, Value> *tmpPtr = parent;
+    parent->right = tmpPtr->right->left;
+    parent->right->right = tmpPtr->right;
+    singleRightRotation(parent);
+}
+
+
 
 
 #endif 
