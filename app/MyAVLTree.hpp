@@ -234,5 +234,29 @@ size_t balanceFactor(Node<Key, Value>* parent){
     return heightOfParent(parent->left) - heightOfParent(parent->right);
 }
 
+template<typename Key, typename Value>
+void rotate(Node<Key, Value>* parent){
+    // tree is LEFT heavy
+    if(balanceFactor(parent) > 1){
+        // tree's LEFT subtree is RIGHT heavy
+        if(balanceFactor(parent->left) < -1){
+            // doubleRightRotation();
+        }
+        else{
+            // singleRightRotation();
+        }
+    }
+    // tree is RIGHT heavy
+    else if(balanceFactor(parent) < -1){
+        // tree's RIGHT subtree is LEFT heavy
+        if(balanceFactor(parent->right) > 1){
+            // doubleLeftRotation();
+        }
+        else{
+            // singleLeftRotation();
+        }
+    }
+}
+
 
 #endif 
