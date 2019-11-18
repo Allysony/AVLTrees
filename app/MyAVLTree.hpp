@@ -295,6 +295,9 @@ void rightRightRotation(Node<Key, Value> *parent) {
     tmpPtr->right = rightChild;
     parent->left = nullptr;
     parent->right = nullptr;
+    tmpPtr->height = 1 + std::max(tmpPtr->left->height, tmpPtr->right->height);
+    rightChild->height = 1 + std::max(rightChild->left->height, rightChild->right->height);
+    parent->height = 1 + std::max(parent->left->height, parent->right->height);
 }
 
 template<typename Key, typename Value>
@@ -305,6 +308,9 @@ void leftLeftRotation(Node<Key, Value> *parent) {
     tmpPtr->left = leftChild;
     parent->left = nullptr;
     parent->right = nullptr;
+    tmpPtr->height = 1 + std::max(tmpPtr->left->height, tmpPtr->right->height);
+    leftChild->height = 1 + std::max(leftChild->left->height, leftChild->right->height);
+    parent->height = 1 + std::max(parent->left->height, parent->right->height);
 }
 
 template<typename Key, typename Value>
