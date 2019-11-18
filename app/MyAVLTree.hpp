@@ -348,12 +348,22 @@ std::vector<Key> helperInOrder(Node<Key, Value>* n)
         return result;
     }
 
-    else
-    {
-        helperInOrder(n->left);
+    else{
+
+        std::vector<Key> x;
+        if(n->left != nullptr) {
+            x = helperInOrder(n->left);
+            result.insert(result.end(), x.begin(), x.end());
+        }
+
         result.push_back(n->InOrderID);
-        helperInOrder(n->right);
+
+        if(n->right != nullptr) {
+            x = helperInOrder(n->right);
+            result.insert(result.end(), x.begin(), x.end());
+        }
     }
+    return result;
 }
 
 template<typename Key, typename Value>
@@ -367,9 +377,17 @@ std::vector<Key> helperPreOrder(Node<Key, Value>* n)
 
     else{
         result.push_back(n->InOrderID);
-        helperPreOrder(n->left);
-        helperPreOrder(n->right);
+        std::vector<Key> x;
+        if(n->left != nullptr) {
+            x = helperPreOrder(n->left);
+            result.insert(result.end(), x.begin(), x.end());
+        }
+        if(n->right != nullptr) {
+            x = helperPreOrder(n->right);
+            result.insert(result.end(), x.begin(), x.end());
+        }
     }
+    return result;
 }
 
 template<typename Key, typename Value>
@@ -381,12 +399,19 @@ std::vector<Key> helperPostOrder(Node<Key, Value>* n)
         return result;
     }
 
-    else
-    {
-        helperPostOrder(n->left);
-        helperPostOrder(n->right);
+    else{
+        std::vector<Key> x;
+        if(n->left != nullptr) {
+            x = helperPostOrder(n->left);
+            result.insert(result.end(), x.begin(), x.end());
+        }
+        if(n->right != nullptr) {
+            x = helperPostOrder(n->right);
+            result.insert(result.end(), x.begin(), x.end());
+        }
         result.push_back(n->InOrderID);
     }
+    return result;
 }
 
 
