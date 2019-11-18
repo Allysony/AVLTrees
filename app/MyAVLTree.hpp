@@ -351,7 +351,7 @@ std::vector<Key> helperInOrder(Node<Key, Value>* n)
     else
     {
         helperInOrder(n->left);
-        result.pushback(n->InOrderID);
+        result.push_back(n->InOrderID);
         helperInOrder(n->right);
     }
 }
@@ -366,7 +366,7 @@ std::vector<Key> helperPreOrder(Node<Key, Value>* n)
     }
 
     else{
-        result.pushback(n->InOrderID);
+        result.push_back(n->InOrderID);
         helperPreOrder(n->left);
         helperPreOrder(n->right);
     }
