@@ -13,9 +13,9 @@
 #include "runtimeexcept.hpp"
 #include <string>
 #include <vector>
-//#include <jmorecfg.h>
+#include <jmorecfg.h>
 
-class ElementNotFoundException : public RuntimeException 
+class ElementNotFoundException : public RuntimeException
 {
 public:
 	ElementNotFoundException(const std::string & err) : RuntimeException(err) {}
@@ -42,12 +42,12 @@ public:
 
 	// In general, a copy constructor and assignment operator
 	// are good things to have.
-	// For ICS 46, Fall 2019, I am not requiring these. 
+	// For ICS 46, Fall 2019, I am not requiring these.
 	//	MyAVLTree(const MyAVLTree & st);
 	//	MyAVLTree & operator=(const MyAVLTree & st);
 
 
-	// The destructor is, however, required. 
+	// The destructor is, however, required.
 	~MyAVLTree()
 	{
 		// TODO
@@ -56,13 +56,13 @@ public:
 	// size() returns the number of distinct keys in the tree.
 	size_t size() const noexcept;
 
-	// isEmpty() returns true if and only if the tree has no values in it. 
+	// isEmpty() returns true if and only if the tree has no values in it.
 	bool isEmpty() const noexcept;
 
 	// contains() returns true if and only if there
 	//  is a (key, value) pair in the tree
 	//	that has the given key as its key.
-	bool contains(const Key & k) const; 
+	bool contains(const Key & k) const;
 
 	// find returns the value associated with the given key
 	// If !contains(k), this will throw an ElementNotFoundException
@@ -70,10 +70,10 @@ public:
 	Value & find(const Key & k);
 	const Value & find(const Key & k) const;
 
-	// Inserts the given key-value pair into 
+	// Inserts the given key-value pair into
 	// the tree and performs the AVL re-balance
-	// operation, as described in lecture. 
-	// If the key already exists in the tree, 
+	// operation, as described in lecture.
+	// If the key already exists in the tree,
 	// you may do as you please (no test cases in
 	// the grading script will deal with this situation)
 	void insert(const Key & k, const Value & v);
@@ -82,7 +82,7 @@ public:
 	// It's a little trickier with an AVL tree
 	// and I am not requiring it for Fall 2019's ICS 46.
 	// You should still read about the remove operation
-	// in your textbook. 
+	// in your textbook.
 
 	// The following three functions all return
 	// the set of keys in the tree as a standard vector.
@@ -138,10 +138,6 @@ bool MyAVLTree<Key, Value>::contains(const Key &k) const
 template<typename Key, typename Value>
 Value & MyAVLTree<Key, Value>::find(const Key & k)
 {
-    return helperFind(k, root);
-}
-template<typename Key, typename Value>
-Value helperFind(const Key & k, Node<Key, Value>*n){
     try {
         if(!MyAVLTree<Key, Value>::contains(k)){
             throw ElementNotFoundException("This element cannot be found.");
@@ -151,16 +147,19 @@ Value helperFind(const Key & k, Node<Key, Value>*n){
     {
         std::cout << err.getMessage() << '\n';
     }
-    if(n->InOrderID == k){
-        return n->data;
+    Node<Key, Value> *tmpPtr = root;
+    while(tmpPtr != nullptr){
+        if (tmpPtr->InOrderID == k){
+            return tmpPtr->data;
+        }
+        else if (k > root->InOrderID){
+            tmpPtr = tmpPtr->right;
+        }
+        else{
+            tmpPtr = tmpPtr->left;
+        }
     }
-    else if (n->InOrderID < k){
-        return helperFind(k,n->left);
-    }
-    else{
-        return helperFind(k,n->right);
-    }
-
+    return tmpPtr->data;
 }
 
 
@@ -168,8 +167,27 @@ Value helperFind(const Key & k, Node<Key, Value>*n){
 template<typename Key, typename Value>
 const Value & MyAVLTree<Key, Value>::find(const Key & k) const
 {
-	Value v;
-	return v; // not only a stub, but a terrible idea.
+    try {
+        if(!MyAVLTree<Key, Value>::contains(k)){
+            throw ElementNotFoundException("This element cannot be found.");
+        }
+    }
+    catch (RuntimeException err)
+    {
+        std::cout << err.getMessage() << '\n';
+    }
+    Node<Key, Value> *tmpPtr = root;
+    while(tmpPtr != nullptr){
+        if (tmpPtr->InOrderID == k){
+            return tmpPtr->data;
+        }
+        else if (k > root->InOrderID){
+            tmpPtr = tmpPtr->right;
+        }
+        else{
+            tmpPtr = tmpPtr->left;
+        }
+    }
 }
 
 template<typename Key, typename Value>
@@ -208,9 +226,12 @@ void MyAVLTree<Key, Value>::insert(const Key & k, const Value & v)
     newNode->parent = tempParent;
 
     Node<Key, Value> *revTemp = tempParent;
-    while(revTemp != root){
-        rotate(revTemp);
-        revTemp = revTemp->parent;
+    if (tempParent != nullptr)
+    {
+        while (revTemp != root) {
+            rotate(revTemp);
+            revTemp = revTemp->parent;
+        }
     }
 }
 
@@ -250,25 +271,28 @@ template<typename Key, typename Value>
     if(temp == nullptr){
         return 0;
     }
-    return 1 + maximum(heightOfParent(temp->left), heightOfParent(temp->right)) ;
+    return 1 + std::max(heightOfParent(temp->left), heightOfParent(temp->right)) ;
  }
-size_t  maximum(size_t x, size_t y){
-    if (x > y){
-        return x;
-    }
-    return y;
-}
+//size_t maximum(size_t x, size_t y){
+//    if (x > y){
+//        return x;
+//    }
+//    return y;
+//}
 template<typename Key, typename Value>
 size_t balanceFactor(Node<Key, Value>* parent){
+    if (parent == nullptr){
+        return 0;
+    }
     return heightOfParent(parent->left) - heightOfParent(parent->right);
 }
 
 template<typename Key, typename Value>
 void rotate(Node<Key, Value>* parent){
     // tree is LEFT heavy
-    if(balanceFactor(parent) > 1){
+    if(balanceFactor(parent) > 1 and (parent != nullptr)){
         // tree's LEFT subtree is RIGHT heavy
-        if(balanceFactor(parent->left) < -1){
+        if(balanceFactor(parent->left) < -1 and (parent->left != nullptr)){
             doubleRightRotation(parent);
         }
         else{
@@ -276,9 +300,9 @@ void rotate(Node<Key, Value>* parent){
         }
     }
     // tree is RIGHT heavy
-    else if(balanceFactor(parent) < -1){
+    else if(balanceFactor(parent) < -1 and (parent != nullptr)){
         // tree's RIGHT subtree is LEFT heavy
-        if(balanceFactor(parent->right) > 1){
+        if(balanceFactor(parent->right) > 1 and (parent->right != nullptr)){
             doubleLeftRotation(parent);
         }
         else{
@@ -366,4 +390,4 @@ std::vector<Key> helperPostOrder(Node<Key, Value>* n)
 }
 
 
-#endif 
+#endif
