@@ -27,6 +27,7 @@ struct Node {
     Node *left = nullptr;
     Node *right = nullptr;
     Node *parent = nullptr;
+    int height = -1;
 };
 
 template<typename Key, typename Value>
@@ -48,7 +49,7 @@ public:
 
     // The destructor is, however, required.
     ~MyAVLTree() {
-        // TODO
+        destruct(root);
     }
 
     // size() returns the number of distinct keys in the tree.
@@ -180,13 +181,16 @@ void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
     Node<Key, Value> *newNode = new Node<Key, Value>;
     newNode->InOrderID = k;
     newNode->data = v;
+    newNode->height = 0;
     Node<Key, Value> *temp = root;
     Node<Key, Value> *tempParent = nullptr;
     while (temp != nullptr) {
         tempParent = temp;
         if (k < temp->InOrderID) {
+            temp->height = 1 + std::max(temp->left->height, temp->right->height);
             temp = temp->left;
         } else if (k > temp->InOrderID) {
+            temp->height = 1 + std::max(temp->left->height, temp->right->height);
             temp = temp->right;
         }
     }
@@ -238,10 +242,11 @@ size_t helperFuncSize(Node<Key, Value> *temp) {
 
 template<typename Key, typename Value>
 size_t heightOfParent(Node<Key, Value> *temp) {
-    if (temp == nullptr) {
-        return 0;
-    }
-    return 1 + std::max(heightOfParent(temp->left), heightOfParent(temp->right));
+    return temp->height;
+//    if (temp == nullptr) {
+//        return 0;
+//    }
+//    return 1 + std::max(heightOfParent(temp->left), heightOfParent(temp->right));
 }
 
 //size_t maximum(size_t x, size_t y){
@@ -290,6 +295,9 @@ void rightRightRotation(Node<Key, Value> *parent) {
     tmpPtr->right = rightChild;
     parent->left = nullptr;
     parent->right = nullptr;
+    tmpPtr->height = 1 + std::max(tmpPtr->left->height, tmpPtr->right->height);
+    rightChild->height = 1 + std::max(rightChild->left->height, rightChild->right->height);
+    parent->height = 1 + std::max(parent->left->height, parent->right->height);
 }
 
 template<typename Key, typename Value>
@@ -300,6 +308,9 @@ void leftLeftRotation(Node<Key, Value> *parent) {
     tmpPtr->left = leftChild;
     parent->left = nullptr;
     parent->right = nullptr;
+    tmpPtr->height = 1 + std::max(tmpPtr->left->height, tmpPtr->right->height);
+    leftChild->height = 1 + std::max(leftChild->left->height, leftChild->right->height);
+    parent->height = 1 + std::max(parent->left->height, parent->right->height);
 }
 
 template<typename Key, typename Value>
@@ -387,5 +398,15 @@ std::vector<Key> helperPostOrder(Node<Key, Value> *n) {
     return result;
 }
 
+template<typename Key, typename Value>
+void destruct(Node<Key, Value>* n)
+{
+    if (n != nullptr)
+    {
+        destruct(n->left);
+        destruct(n->right);
+        delete n;
+    }
+}
 
 #endif
