@@ -13,7 +13,7 @@
 #include "runtimeexcept.hpp"
 #include <string>
 #include <vector>
-#include <jmorecfg.h>
+//#include <jmorecfg.h>
 
 class ElementNotFoundException : public RuntimeException
 {
