@@ -27,6 +27,7 @@ struct Node {
     Node *left = nullptr;
     Node *right = nullptr;
     Node *parent = nullptr;
+    int height = -1;
 };
 
 template<typename Key, typename Value>
@@ -180,13 +181,16 @@ void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
     Node<Key, Value> *newNode = new Node<Key, Value>;
     newNode->InOrderID = k;
     newNode->data = v;
+    newNode->height = 0;
     Node<Key, Value> *temp = root;
     Node<Key, Value> *tempParent = nullptr;
     while (temp != nullptr) {
         tempParent = temp;
         if (k < temp->InOrderID) {
+            temp->height = 1 + std::max(temp->left->height, temp->right->height);
             temp = temp->left;
         } else if (k > temp->InOrderID) {
+            temp->height = 1 + std::max(temp->left->height, temp->right->height);
             temp = temp->right;
         }
     }
@@ -238,10 +242,11 @@ size_t helperFuncSize(Node<Key, Value> *temp) {
 
 template<typename Key, typename Value>
 size_t heightOfParent(Node<Key, Value> *temp) {
-    if (temp == nullptr) {
-        return 0;
-    }
-    return 1 + std::max(heightOfParent(temp->left), heightOfParent(temp->right));
+    return temp->height;
+//    if (temp == nullptr) {
+//        return 0;
+//    }
+//    return 1 + std::max(heightOfParent(temp->left), heightOfParent(temp->right));
 }
 
 //size_t maximum(size_t x, size_t y){
