@@ -13,7 +13,7 @@
 #include "runtimeexcept.hpp"
 #include <string>
 #include <vector>
-#include <jmorecfg.h>
+//#include <jmorecfg.h>
 
 class ElementNotFoundException : public RuntimeException 
 {
@@ -220,24 +220,21 @@ void MyAVLTree<Key, Value>::insert(const Key & k, const Value & v)
 template<typename Key, typename Value>
 std::vector<Key> MyAVLTree<Key, Value>::inOrder() const
 {
-	std::vector<Key> foo;
-	return foo; 
+	return helperInOrder(root);
 }
 
 
 template<typename Key, typename Value>
 std::vector<Key> MyAVLTree<Key, Value>::preOrder() const
 {
-	std::vector<Key> foo;
-	return foo; 
+	return helperPreOrder(root);
 }
 
 
 template<typename Key, typename Value>
 std::vector<Key> MyAVLTree<Key, Value>::postOrder() const
 {
-	std::vector<Key> foo;
-	return foo; 
+	return helperPostOrder(root);
 }
 
 template<typename Key, typename Value>
@@ -318,7 +315,55 @@ void doubleRightRotation(Node<Key, Value>* parent){
     singleRightRotation(parent);
 }
 
+template<typename Key, typename Value>
+std::vector<Key> helperInOrder(Node<Key, Value>* n)
+{
+    std::vector<Key> result;
+    if (n == nullptr)
+    {
+        return result;
+    }
 
+    else
+    {
+        helperInOrder(n->left);
+        result.pushback(n->InOrderID);
+        helperInOrder(n->right);
+    }
+}
+
+template<typename Key, typename Value>
+std::vector<Key> helperPreOrder(Node<Key, Value>* n)
+{
+    std::vector<Key> result;
+    if (n == nullptr)
+    {
+        return result;
+    }
+
+    else{
+        result.pushback(n->InOrderID);
+        helperPreOrder(n->left);
+        helperPreOrder(n->right);
+    }
+}
+
+template<typename Key, typename Value>
+std::vector<Key> helperPostOrder(Node<Key, Value>* n)
+{
+    std::vector<Key> result;
+    if (n == nullptr)
+    {
+        return result;
+    }
+
+    else
+    {
+        helperPostOrder(n->left);
+        helperPostOrder(n->right);
+        result.push_back(n->InOrderID);
+    }
+}
 
 
 #endif 
