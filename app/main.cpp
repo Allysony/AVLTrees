@@ -17,31 +17,32 @@ void test1()
 	// do things here if you want.
 }
 
-//void test2()
-//{
-//	MyAVLTree<int, std::string> tree;
-//	tree.insert(5, "Mike");
-//	bool b1 = tree.contains(5) && tree.find(5) == "Mike";
-//	if( b1 )
-//	{
-//		std::cout << "test2() passes." << std::endl;
-//	}
-//	else
-//	{
-//		std::cout << "test2() fails." << std::endl;
-//	}
-//}
+void test2()
+{
+	MyAVLTree<int, std::string> tree;
+	tree.insert(5, "Mike");
+	bool b1 = tree.contains(5) && tree.find(5) == "Mike";
+	if( b1 )
+	{
+		std::cout << "test2() passes." << std::endl;
+	}
+	else
+	{
+		std::cout << "test2() fails." << std::endl;
+	}
+}
 
 int main()
 {
 
 	int choice;
+	std::cout << "Allyson. will you pick the red pill or the blue one?\n";
 	std::cin >> choice;
 	switch(choice)
 	{
 		case 1: test1(); break;
-//		case 2: test2(); break;
-		default: std::cout << "Not a choice.\n" << std::endl; break; 
+		case 2: test2(); break;
+		default: std::cout << "Not a choice.\n" << std::endl; break;
 	}
     return 0;
 }
