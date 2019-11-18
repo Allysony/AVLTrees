@@ -33,13 +33,19 @@ void countWords(std::istream & in, MyAVLTree<std::string, unsigned> & counter)
 			{
 				std::cout << word << std::endl;
 				// In the "real program," you do something else here.
+				if(counter.contains(word)){
+				    counter.find(word)++; // <- this is totally maybe not right
+				}
+				else{
+				    counter.insert(word, 1);
+				}
 			}
 			else
 			{
 				// In "real program," you don't do anything here.
 				// This output is for your information here.
 				// Comment it out or delete it before submitting. 
-				std::cout << "Skipped because found something like a number or special characters." << std::endl; 
+				std::cout << "Skipped because found something like a number or special characters." << std::endl;
 			}
 		}
 	}

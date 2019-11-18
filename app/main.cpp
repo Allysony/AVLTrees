@@ -3,7 +3,7 @@
 #include <string>
 #include <sstream>
 
-// #include "proj3.hpp"
+#include "proj3.hpp"
 #include "MyAVLTree.hpp"
 
 
@@ -14,7 +14,7 @@ void test1()
 	MyAVLTree<std::string, unsigned> tree; 
 	std::fstream fs;
 	fs.open("gtest/hamletact1.txt");
-	//countWords(fs, tree);
+	countWords(fs, tree);
 	// do things here if you want.
 }
 
