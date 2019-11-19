@@ -27,6 +27,46 @@ struct Node {
     Node *left = nullptr;
     Node *right = nullptr;
     Node *parent = nullptr;
+
+    /**
+     * Made by Josh
+     */
+    bool isLeaf() {
+        return (left == nullptr and right == nullptr);
+    }
+    /**
+     * Made by Josh
+     */
+    int getNumberOfNodes() {
+        int numLeftNodes = 0;
+        int numRightNodes = 0;
+
+        if (left != nullptr) {
+            numLeftNodes = left->getNumberOfNodes();
+        }
+        if (right != nullptr) {
+            numRightNodes = right->getNumberOfNodes();
+        }
+
+        return 1 + numLeftNodes + numRightNodes; // Add 1 to count self node
+    }
+    /**
+     * Made by Josh
+     */
+    int getHeight() {
+        return getHeight(this);
+    }
+    /**
+     * Made by Josh
+     */
+    int getHeight(Node<Key, Value> *currNode) {
+        int height = 0;
+
+        if (currNode != nullptr) {
+            height = 1 + std::max(getHeight(currNode->left), getHeight(currNode->right));
+        }
+        return height;
+    }
 };
 
 template<typename Key, typename Value>
@@ -92,7 +132,15 @@ public:
 
     std::vector<Key> postOrder() const;
 
+    /**
+     * Added by Josh
+     */
+    void addEntry(Node<Key, Value> *currNode, const Key &k, const Value &v);
 
+    /**
+     * Added by Josh
+     */
+     void checkBalance(Node<Key, Value> *currNode);
 };
 
 
@@ -175,36 +223,152 @@ const Value &MyAVLTree<Key, Value>::find(const Key &k) const {
     }
 }
 
+//template<typename Key, typename Value>
+//void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
+//    Node<Key, Value> *newNode = new Node<Key, Value>;
+//    newNode->InOrderID = k;
+//    newNode->data = v;
+//    Node<Key, Value> *temp = root;
+//    Node<Key, Value> *tempParent = nullptr;
+//    while (temp != nullptr) {
+//        tempParent = temp;
+//        if (k < temp->InOrderID) {
+//            temp = temp->left;
+//        } else if (k > temp->InOrderID) {
+//            temp = temp->right;
+//        }
+//    }
+//    if (tempParent == nullptr) {
+//        root = newNode;
+//    } else if (k < tempParent->InOrderID) {
+//        tempParent->left = newNode;
+//    } else if (k > tempParent->InOrderID) {
+//        tempParent->right = newNode;
+//    }
+//
+//    newNode->parent = tempParent;
+//
+//    Node<Key, Value> *revTemp = tempParent;
+//    if (tempParent != nullptr) {
+//        while (revTemp != root) {
+//            rotate(revTemp);
+//            revTemp = revTemp->parent;
+//        }
+//    }
+//}
+
+/**
+ * Made by Josh
+ */
 template<typename Key, typename Value>
 void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
-    Node<Key, Value> *newNode = new Node<Key, Value>;
-    newNode->InOrderID = k;
-    newNode->data = v;
-    Node<Key, Value> *temp = root;
-    Node<Key, Value> *tempParent = nullptr;
-    while (temp != nullptr) {
-        tempParent = temp;
-        if (k < temp->InOrderID) {
-            temp = temp->left;
-        } else if (k > temp->InOrderID) {
-            temp = temp->right;
+    if (isEmpty()) {
+        root = new Node<Key, Value>;
+        root->InOrderID = k;
+        root->data = v;
+    } else {
+        addEntry(root, k, v);
+    }
+}
+
+/**
+ * Made by Josh
+ */
+template<typename Key, typename Value>
+void MyAVLTree<Key, Value>::addEntry(Node<Key, Value> *currNode, const Key &k, const Value &v) {
+
+    // If new value matches object at root of tree/subtree, replace root with new data
+    if (k == currNode->data) {
+        currNode->data = v;
+    }
+        // if new value is smaller than at root
+    else if ((k - currNode->InOrderID) < 0) {
+        // If the root has a leftChild, recursively use the addEntry method until newEntry is correctly added.
+        if (currNode->left != nullptr) {
+            addEntry(currNode->left, k, v);
+        }
+            // If the root does not have a leftChild, set the root's leftChild with newEntry as its data.
+        else {
+            currNode->left = new Node<Key, Value>;
+            currNode->left->InOrderID = k;
+            currNode->left->data = v;
+            currNode->left->parent = currNode;
+            checkBalance(currNode->parent);
         }
     }
-    if (tempParent == nullptr) {
-        root = newNode;
-    } else if (k < tempParent->InOrderID) {
-        tempParent->left = newNode;
-    } else if (k > tempParent->InOrderID) {
-        tempParent->right = newNode;
+        // newEntry is comparatively greater than the data at the root node and should ne added in the right subtree.
+    else {
+
+        // If the root has a rightChild, recursively use the addEntry method until newEntry is correctly added.
+        if (currNode->right != nullptr) {
+            addEntry(currNode->right, k, v);
+        }
+            // If the root does not have a rightChild, set the root's rightChild with newEntry as its data.
+        else {
+            currNode->right = new Node<Key, Value>;
+            currNode->right->InOrderID = k;
+            currNode->right->data = v;
+            currNode->right->parent = currNode;
+            checkBalance(currNode->parent);
+        }
     }
+}
 
-    newNode->parent = tempParent;
+/**
+ * Made by Josh
+ */
+template<typename Key, typename Value>
+void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
 
-    Node<Key, Value> *revTemp = tempParent;
-    if (tempParent != nullptr) {
-        while (revTemp != root) {
-            rotate(revTemp);
-            revTemp = revTemp->parent;
+    while (currNode != root) {
+        int balanceFactor = currNode->right->getHeight() - currNode->left->getHeight();
+
+        // Left Heavy
+        if (balanceFactor < -1) {
+            Node<Key, Value> *leftChild = currNode->left;
+
+            // Left-Left Case: Perform Right Rotation
+            if (leftChild->left != nullptr) {
+                Node<Key, Value> *currParent = currNode->parent;
+                currParent->left = leftChild;
+                leftChild->right = currNode;
+
+                currNode->left = nullptr;
+                currNode->right = nullptr;
+            }
+            // Left-Right Case: Perform Left Rotation then Right Rotation
+            else {
+                // Left Rotation
+                currNode->left = leftChild->right;
+                currNode->left->left = leftChild;
+                leftChild->left = nullptr;
+                leftChild->right = nullptr;
+
+                // Right Rotation
+                Node<Key, Value> *currParent = currNode->parent;
+                currParent->left = currNode->left;
+                currParent->left->right = currNode;
+
+                currNode->left = nullptr;
+                currNode->right = nullptr;
+            }
+        }
+        // Right Heavy
+        else if (balanceFactor > 1) {
+            Node<Key, Value> *rightChild = currNode->right;
+
+            // Right-Right Case: Perform Left Rotation
+            if (rightChild->right != nullptr) {
+
+            }
+            // Right-Left Case: Perform Right Rotation then Left Rotation
+            else {
+
+            }
+        }
+        // Move upward toward root
+        else {
+            currNode = currNode->parent;
         }
     }
 }
