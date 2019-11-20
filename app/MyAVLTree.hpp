@@ -67,7 +67,7 @@ public:
 
     // The destructor is, however, required.
     ~MyAVLTree() {
-        // TODO
+        destruct(root);
     }
 
     // size() returns the number of distinct keys in the tree.
@@ -203,53 +203,6 @@ const Value &MyAVLTree<Key, Value>::find(const Key &k) const {
 }
 
 
-//template<typename Key, typename Value>
-//void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
-//    Node<Key, Value> *newNode = new Node<Key, Value>;
-//    newNode->InOrderID = k;
-//    newNode->data = v;
-//    Node<Key, Value> *temp = root;
-//    Node<Key, Value> *tempParent = nullptr;
-//    while (temp != nullptr) {
-//        tempParent = temp;
-//        if (k < temp->InOrderID) {
-//            temp = temp->left;
-//        } else if (k > temp->InOrderID) {
-//            temp = temp->right;
-//        }
-//    }
-//    if (tempParent == nullptr) {
-//        root = newNode;
-//    } else if (k < tempParent->InOrderID) {
-//        tempParent->left = newNode;
-//    } else if (k > tempParent->InOrderID) {
-//        tempParent->right = newNode;
-//    }
-//
-//    newNode->parent = tempParent;
-//
-//    Node<Key, Value> *currNode = tempParent;
-//    if (tempParent != nullptr) {
-//        while (currNode != root) {
-//            for (int i = 0; i < preOrder().size(); i++) {
-//                std::cout << preOrder().at(i) << " ";
-//            }
-//            std::cout << std::endl;
-//            if(rotate(currNode)){
-//                break;
-//            }
-//            currNode = currNode->parent;
-//        }
-//    }
-//    for (int i = 0; i < preOrder().size(); i++) {
-//        std::cout << preOrder().at(i) << " ";
-//    }
-//    std::cout << std::endl;
-//    std::cout << "insert done" << std::endl;
-//
-//
-//}
-
 template<typename Key, typename Value>
 void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
     if (isEmpty()) {
@@ -312,11 +265,16 @@ void MyAVLTree<Key, Value>::addEntry(Node<Key, Value> *currNode, const Key &k, c
 
 template<typename Key, typename Value>
 void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
+    Node<Key, Value> *originalCurrNode = currNode;
     do {
+
+
         int balanceFactor = currNode->right->getHeight() - currNode->left->getHeight();
+
 
         // Left Heavy
         if (balanceFactor < -1) {
+
             Node<Key, Value> *leftChild = currNode->left;
 
             // Left-Left Case: Perform Right Rotation
@@ -364,12 +322,14 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
 
             }
         }
-            // Move upward toward root
-        else {
-            currNode = currNode->parent;
+        // Move upward toward root
 
-        }
-    } while (currNode != nullptr);
+
+        originalCurrNode = originalCurrNode->parent;
+
+
+
+    } while (originalCurrNode != nullptr);
 }
 
 template<typename Key, typename Value>
@@ -620,5 +580,13 @@ std::vector<Key> helperPostOrder(Node<Key, Value> *n) {
     return result;
 }
 
+template<typename Key, typename Value>
+void destruct(Node<Key, Value> *n) {
+    if (n != nullptr) {
+        destruct(n->left);
+        destruct(n->right);
+        delete n;
+    }
+}
 
 #endif
