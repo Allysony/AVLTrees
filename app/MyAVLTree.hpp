@@ -67,7 +67,7 @@ public:
 
     // The destructor is, however, required.
     ~MyAVLTree() {
-        // TODO
+        destruct(root);
     }
 
     // size() returns the number of distinct keys in the tree.
@@ -620,5 +620,15 @@ std::vector<Key> helperPostOrder(Node<Key, Value> *n) {
     return result;
 }
 
+template<typename Key, typename Value>
+void destruct(Node<Key, Value>* n)
+{
+    if (n != nullptr)
+    {
+        destruct(n->left);
+        destruct(n->right);
+        delete n;
+    }
+}
 
 #endif
