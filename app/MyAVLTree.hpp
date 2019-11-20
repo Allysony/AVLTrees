@@ -28,7 +28,6 @@ struct Node {
     Node *right = nullptr;
     Node *parent = nullptr;
 
-    //STRUCT MEMBER FUNCTIONS MAYBE MOVE
     bool isLeaf() {
         return (left == nullptr and right == nullptr);
     }
@@ -277,7 +276,7 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
             Node<Key, Value> *leftChild = currNode->left;
 
             // Left-Left Case: Perform Right Rotation
-            if(leftChild->left->getHeight() > leftChild->right->getHeight()){
+            if (leftChild->left->getHeight() > leftChild->right->getHeight()) {
                 leftLeftCase(currNode, leftChild);
             }
 
@@ -291,9 +290,14 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
                 currNode->left = leftChild->right;
                 currNode->left->parent = currNode;
 
+
                 leftChild->right = currNode->left->left;
                 currNode->left->left = leftChild;
                 leftChild->parent = currNode->left;
+
+                if (leftChild->right != nullptr) {
+                    leftChild->right->parent = leftChild;
+                }
 
                 // Right Rotation
                 leftLeftCase(currNode, leftChild->parent);
@@ -306,7 +310,7 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
             Node<Key, Value> *rightChild = currNode->right;
 
             // Right-Right Case: Perform Left Rotation
-            if (rightChild->right->getHeight() > rightChild->left->getHeight()){
+            if (rightChild->right->getHeight() > rightChild->left->getHeight()) {
                 rightRightCase(currNode, rightChild);
             }
 //            if (rightChild->right != nullptr) {
@@ -322,6 +326,9 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
                 currNode->right->right = rightChild;
                 rightChild->parent = currNode->right;
 
+                if (rightChild->left != nullptr) {
+                    rightChild->left->parent = rightChild;
+                }
 
                 //left rotation
                 rightRightCase(currNode, rightChild->parent);
@@ -333,7 +340,6 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
 
 
         currNode = currNode->parent;
-
 
 
     } while (currNode != nullptr);
@@ -431,12 +437,7 @@ int getHeight(Node<Key, Value> *currNode) {
     return 1 + std::max(getHeight(currNode->left), getHeight(currNode->right));
 }
 
-//size_t maximum(size_t x, size_t y){
-//    if (x > y){
-//        return x;
-//    }
-//    return y;
-//}
+
 template<typename Key, typename Value>
 int balanceFactor(Node<Key, Value> *currNode) {
     if (currNode == nullptr) {
@@ -446,15 +447,6 @@ int balanceFactor(Node<Key, Value> *currNode) {
 
 }
 
-
-
-
-
-//    if (currNode == nullptr) {
-//        return 0;
-//    }
-//    return heightOfParent(currNode->left) - getHeight(currNode->right);
-//}
 
 template<typename Key, typename Value>
 bool rotate(Node<Key, Value> *currNode) {
