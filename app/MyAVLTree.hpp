@@ -100,9 +100,9 @@ public:
 
     void checkBalance(Node<Key, Value> *currNode);
 
-    void leftLeftCase(Node<Key, Value> *currNode, Node<Key, Value> *leftChild );
+    void leftLeftCase(Node<Key, Value> *currNode, Node<Key, Value> *leftChild);
 
-    void rightRightCase(Node<Key, Value> *currNode, Node<Key, Value> *rightChild );
+    void rightRightCase(Node<Key, Value> *currNode, Node<Key, Value> *rightChild);
 
     // in general, a "remove" function would be here
     // It's a little trickier with an AVL tree
@@ -258,11 +258,12 @@ void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
         root->data = v;
     } else {
         addEntry(root, k, v);
-        for (int i = 0; i < preOrder().size(); i++) {
-            std::cout << preOrder().at(i) << " ";
-        }
-        std::cout << std::endl;
+
     }
+    for (int i = 0; i < preOrder().size(); i++) {
+        std::cout << preOrder().at(i) << " ";
+    }
+    std::cout << std::endl;
 }
 
 template<typename Key, typename Value>
@@ -333,8 +334,7 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
                 leftChild->parent = currNode->left;
 
                 // Right Rotation
-                leftLeftCase(currNode, leftChild);
-
+                leftLeftCase(currNode, leftChild->parent);
 
 
             }
@@ -359,23 +359,21 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
 
 
                 //left rotation
-                rightRightCase(currNode, rightChild);
+                rightRightCase(currNode, rightChild->parent);
 
 
             }
         }
             // Move upward toward root
         else {
-            if (currNode != root) {
-                currNode = currNode->parent;
-            }
+            currNode = currNode->parent;
+
         }
-    } while (currNode != root);
+    } while (currNode != nullptr);
 }
 
 template<typename Key, typename Value>
-void MyAVLTree<Key, Value>::leftLeftCase(Node<Key, Value> *currNode, Node<Key, Value> *leftChild )
-{
+void MyAVLTree<Key, Value>::leftLeftCase(Node<Key, Value> *currNode, Node<Key, Value> *leftChild) {
     // if is not a root rotation
     if (currNode != root) {
         Node<Key, Value> *currParent = currNode->parent;
@@ -386,7 +384,7 @@ void MyAVLTree<Key, Value>::leftLeftCase(Node<Key, Value> *currNode, Node<Key, V
         }
         leftChild->parent = currParent;
     }
-    // root rotation
+        // root rotation
     else {
         root = leftChild;
         leftChild->parent = nullptr; // ur fine
@@ -400,20 +398,19 @@ void MyAVLTree<Key, Value>::leftLeftCase(Node<Key, Value> *currNode, Node<Key, V
 }
 
 template<typename Key, typename Value>
-void MyAVLTree<Key, Value>::rightRightCase(Node<Key, Value> *currNode, Node<Key, Value> *rightChild )
-{
+void MyAVLTree<Key, Value>::rightRightCase(Node<Key, Value> *currNode, Node<Key, Value> *rightChild) {
     // not a root rotation
-    if(currNode != root){
-        Node<Key,Value> *currParent = currNode->parent;
-        if (currNode == currParent->right){
+    if (currNode != root) {
+        Node<Key, Value> *currParent = currNode->parent;
+        if (currNode == currParent->right) {
             currParent->right = rightChild;
-        } else{
+        } else {
             currParent->left = rightChild;
         }
         rightChild->parent = currParent;
     }
-    // is a root rotation
-    else{
+        // is a root rotation
+    else {
         root = rightChild;
         rightChild->parent = nullptr;
     }
@@ -425,7 +422,6 @@ void MyAVLTree<Key, Value>::rightRightCase(Node<Key, Value> *currNode, Node<Key,
     currNode->parent = rightChild;
 
 }
-
 
 
 template<typename Key, typename Value>
