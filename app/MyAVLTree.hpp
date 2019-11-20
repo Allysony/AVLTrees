@@ -67,7 +67,7 @@ public:
 
     // The destructor is, however, required.
     ~MyAVLTree() {
-        // TODO
+        destruct(root);
     }
 
     // size() returns the number of distinct keys in the tree.
@@ -333,7 +333,7 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
                 leftChild->parent = currNode->left;
 
                 // Right Rotation
-                leftLeftCase(currNode, leftChild);
+                leftLeftCase(currNode, leftChild->parent);
 
 
 
@@ -359,18 +359,16 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
 
 
                 //left rotation
-                rightRightCase(currNode, rightChild);
+                rightRightCase(currNode, rightChild->parent);
 
 
             }
         }
             // Move upward toward root
         else {
-            if (currNode != root) {
                 currNode = currNode->parent;
-            }
         }
-    } while (currNode != root);
+    } while (currNode != nullptr);
 }
 
 template<typename Key, typename Value>
@@ -624,5 +622,15 @@ std::vector<Key> helperPostOrder(Node<Key, Value> *n) {
     return result;
 }
 
+template<typename Key, typename Value>
+void destruct(Node<Key, Value>* n)
+{
+    if (n != nullptr)
+    {
+        destruct(n->left);
+        destruct(n->right);
+        delete n;
+    }
+}
 
 #endif
