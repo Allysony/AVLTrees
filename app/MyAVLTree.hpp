@@ -308,7 +308,8 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
 
             // Left-Left Case: Perform Right Rotation
             if (leftChild->left != nullptr) {
-                if (currNode != root) { // if is not a root rotation
+                // if is not a root rotation
+                if (currNode != root) {
                     Node<Key, Value> *currParent = currNode->parent;
                     if (currNode == currParent->left) {
                         currParent->left = leftChild;
@@ -316,16 +317,20 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
                         currParent->right = leftChild;
                     }
                     leftChild->parent = currParent;
-                    currNode->parent = leftChild;
-                } else {       // root rotation
+                }
+                // root rotation
+                else {
+                    root = leftChild;
                     leftChild->parent = nullptr;
                 }
+                currNode->left = leftChild->right;
+                currNode->left->parent = currNode;
+                currNode->parent = leftChild;
+
                 leftChild->right = currNode;
 
-                currNode->left = nullptr;
-                currNode->right = nullptr;
             }
-                // Left-Right Case: Perform Left Rotation then Right Rotation
+            // Left-Right Case: Perform Left Rotation then Right Rotation
             else {
                 // Left Rotation
                 currNode->left = leftChild->right;
