@@ -66,6 +66,62 @@ void LEFTLEFTTEEEEEST()
     tree.insert(1, "a");
 
 }
+void LEFTRIGHTtest()
+{
+    MyAVLTree<int, std::string> tree;
+    tree.insert(11, "a");
+    tree.insert(6, "a");
+    tree.insert(4, "a");
+    tree.insert(2, "a");
+    tree.insert(3, "a");
+
+}void big()
+{
+    MyAVLTree<int, std::string> tree;
+    tree.insert(100, "a");
+    tree.insert(1, "a");
+    tree.insert(99, "a");
+    tree.insert(2, "a");
+    tree.insert(98, "a");
+    tree.insert(3, "a");
+    tree.insert(97, "a");
+    tree.insert(4, "a");
+    tree.insert(95, "a");
+    tree.insert(10, "a");
+    tree.insert(11, "a");
+    tree.insert(12, "a");
+    tree.insert(14, "a");
+    tree.insert(15, "a");
+    tree.insert(16, "a");
+    tree.insert(17, "a");
+    tree.insert(18, "a");
+    tree.insert(84, "a");
+    tree.insert(90, "a");
+    tree.insert(100, "a");
+
+
+}
+void streamstringtest()
+{
+    try {
+        std::string quote = "I'm dishonest, and a dishonest man you can ";
+        quote += "always trust to be dishonest. Honestly. It's the honest ";
+        quote += "ones you want to watch out for, because you can z ";
+        quote += "predict when they're going to do something incredibly... stupid.";
+
+        std::istringstream stream(quote);
+
+        MyAVLTree<std::string, unsigned> tree;
+
+        countWords(stream, tree);
+    }
+    catch(std::ifstream::failure e){
+        std::cerr << "Exception opening/reading/closing file\n";
+
+    }
+
+
+}
 int main()
 {
 
@@ -79,6 +135,9 @@ int main()
 		case 3: test3(); break;
 		case 4: test4(); break;
 		case 5: LEFTLEFTTEEEEEST(); break;
+		case 6: LEFTRIGHTtest(); break;
+		case 7: streamstringtest(); break;
+		case 8: big(); break;
 		default: std::cout << "Not a choice.\n" << std::endl; break;
 	}
     return 0;
