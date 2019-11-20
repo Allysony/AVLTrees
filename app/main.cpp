@@ -32,7 +32,40 @@ void test2()
 		std::cout << "test2() fails." << std::endl;
 	}
 }
+void test3()
+{
+    MyAVLTree<int, std::string> tree;
+    tree.insert(5, "foo");
+    tree.insert(3, "sna");
+    tree.insert(10, "bar");
+    tree.insert(12, "twelve");
+    if(tree.contains(12)){
+        std::cout << "lsdjf" << std::endl;
+    }
+}
+void test4()
+{
+    MyAVLTree<int, std::string> tree;
+    tree.insert(5, "foo");
+    tree.insert(3, "sna");
+    tree.insert(10, "bar");
+    tree.insert(12, "twelve");
+    tree.insert(15, "fifteen");
+    if(tree.size() == 5){
+        std::cout << "yes" << std::endl;
+    }
+}
 
+void LEFTLEFTTEEEEEST()
+{
+    MyAVLTree<int, std::string> tree;
+    tree.insert(11, "a");
+    tree.insert(6, "a");
+    tree.insert(4, "a");
+    tree.insert(2, "a");
+    tree.insert(1, "a");
+
+}
 int main()
 {
 
@@ -43,6 +76,9 @@ int main()
 	{
 		case 1: test1(); break;
 		case 2: test2(); break;
+		case 3: test3(); break;
+		case 4: test4(); break;
+		case 5: LEFTLEFTTEEEEEST(); break;
 		default: std::cout << "Not a choice.\n" << std::endl; break;
 	}
     return 0;
