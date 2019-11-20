@@ -254,6 +254,10 @@ void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
         root->data = v;
     } else {
         addEntry(root, k, v);
+        for (int i = 0; i < preOrder().size(); i++) {
+            std::cout << preOrder().at(i) << " ";
+        }
+        std::cout << std::endl;
     }
 }
 
@@ -261,11 +265,11 @@ template<typename Key, typename Value>
 void MyAVLTree<Key, Value>::addEntry(Node<Key, Value> *currNode, const Key &k, const Value &v) {
 
     // If new value matches object at root of tree/subtree, replace root with new data
-    if (k == currNode->data) {
+    if (k == currNode->InOrderID) {
         currNode->data = v;
     }
         // if new value is smaller than at root
-    else if ((k - currNode->InOrderID) < 0) {
+    else if (k < currNode->InOrderID) {
         // If the root has a leftChild, recursively use the addEntry method until newEntry is correctly added.
         if (currNode->left != nullptr) {
             addEntry(currNode->left, k, v);
@@ -276,7 +280,9 @@ void MyAVLTree<Key, Value>::addEntry(Node<Key, Value> *currNode, const Key &k, c
             currNode->left->InOrderID = k;
             currNode->left->data = v;
             currNode->left->parent = currNode;
-            checkBalance(currNode->parent);
+            if (currNode != root){
+                checkBalance(currNode->parent);
+            }
         }
     }
         // newEntry is comparatively greater than the data at the root node and should ne added in the right subtree.
@@ -292,7 +298,9 @@ void MyAVLTree<Key, Value>::addEntry(Node<Key, Value> *currNode, const Key &k, c
             currNode->right->InOrderID = k;
             currNode->right->data = v;
             currNode->right->parent = currNode;
-            checkBalance(currNode->parent);
+            if(currNode != root){
+                checkBalance(currNode->parent);
+            }
         }
     }
 }
@@ -350,6 +358,12 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
 
             // Right-Right Case: Perform Left Rotation
             if (rightChild->right != nullptr) {
+                // not a root rotation
+                if(currNode != root){
+                    //Node<Key, Value> *currParent = currNode->parent;
+
+                }
+
 
             }
                 // Right-Left Case: Perform Right Rotation then Left Rotation
