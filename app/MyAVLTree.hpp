@@ -28,39 +28,17 @@ struct Node {
     Node *right = nullptr;
     Node *parent = nullptr;
 
-    /**
-     * Made by Josh
-     */
+    //STRUCT MEMBER FUNCTIONS MAYBE MOVE
     bool isLeaf() {
         return (left == nullptr and right == nullptr);
     }
-    /**
-     * Made by Josh
-     */
-    int getNumberOfNodes() {
-        int numLeftNodes = 0;
-        int numRightNodes = 0;
 
-        if (left != nullptr) {
-            numLeftNodes = left->getNumberOfNodes();
-        }
-        if (right != nullptr) {
-            numRightNodes = right->getNumberOfNodes();
-        }
-
-        return 1 + numLeftNodes + numRightNodes; // Add 1 to count self node
-    }
-    /**
-     * Made by Josh
-     */
-    int getHeight() {
+    size_t getHeight() {
         return getHeight(this);
     }
-    /**
-     * Made by Josh
-     */
-    int getHeight(Node<Key, Value> *currNode) {
-        int height = 0;
+
+    size_t getHeight(Node<Key, Value> *currNode) {
+        size_t height = 0;
 
         if (currNode != nullptr) {
             height = 1 + std::max(getHeight(currNode->left), getHeight(currNode->right));
@@ -68,6 +46,7 @@ struct Node {
         return height;
     }
 };
+
 
 template<typename Key, typename Value>
 class MyAVLTree {
@@ -223,6 +202,7 @@ const Value &MyAVLTree<Key, Value>::find(const Key &k) const {
     }
 }
 
+
 //template<typename Key, typename Value>
 //void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
 //    Node<Key, Value> *newNode = new Node<Key, Value>;
@@ -314,13 +294,9 @@ void MyAVLTree<Key, Value>::addEntry(Node<Key, Value> *currNode, const Key &k, c
     }
 }
 
-/**
- * Made by Josh
- */
 template<typename Key, typename Value>
 void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
-
-    while (currNode != root) {
+    do {
         int balanceFactor = currNode->right->getHeight() - currNode->left->getHeight();
 
         // Left Heavy
@@ -329,14 +305,24 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
 
             // Left-Left Case: Perform Right Rotation
             if (leftChild->left != nullptr) {
-                Node<Key, Value> *currParent = currNode->parent;
-                currParent->left = leftChild;
+                if (currNode != root) { // if is not a root rotation
+                    Node<Key, Value> *currParent = currNode->parent;
+                    if (currNode == currParent->left) {
+                        currParent->left = leftChild;
+                    } else {
+                        currParent->right = leftChild;
+                    }
+                    leftChild->parent = currParent;
+                    currNode->parent = leftChild;
+                } else {       // root rotation
+                    leftChild->parent = nullptr;
+                }
                 leftChild->right = currNode;
 
                 currNode->left = nullptr;
                 currNode->right = nullptr;
             }
-            // Left-Right Case: Perform Left Rotation then Right Rotation
+                // Left-Right Case: Perform Left Rotation then Right Rotation
             else {
                 // Left Rotation
                 currNode->left = leftChild->right;
@@ -353,7 +339,7 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
                 currNode->right = nullptr;
             }
         }
-        // Right Heavy
+            // Right Heavy
         else if (balanceFactor > 1) {
             Node<Key, Value> *rightChild = currNode->right;
 
@@ -361,18 +347,17 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
             if (rightChild->right != nullptr) {
 
             }
-            // Right-Left Case: Perform Right Rotation then Left Rotation
+                // Right-Left Case: Perform Right Rotation then Left Rotation
             else {
 
             }
         }
-        // Move upward toward root
+            // Move upward toward root
         else {
             currNode = currNode->parent;
         }
-    }
+    } while (currNode != root);
 }
-
 
 template<typename Key, typename Value>
 std::vector<Key> MyAVLTree<Key, Value>::inOrder() const {
@@ -401,11 +386,17 @@ size_t helperFuncSize(Node<Key, Value> *temp) {
 }
 
 template<typename Key, typename Value>
-size_t heightOfParent(Node<Key, Value> *temp) {
-    if (temp == nullptr) {
+size_t getHeight(Node<Key, Value> *currNode) {
+    if (currNode == nullptr) {
         return 0;
+    } else if (currNode->left == nullptr and currNode->right == nullptr) {
+        return 0;
+    } else if (currNode->left == nullptr) {
+        return getHeight(currNode->right);
+    } else if (currNode->right == nullptr) {
+        return getHeight(currNode->left);
     }
-    return 1 + std::max(heightOfParent(temp->left), heightOfParent(temp->right));
+    return 1 + std::max(getHeight(currNode->left), getHeight(currNode->right));
 }
 
 //size_t maximum(size_t x, size_t y){
@@ -415,35 +406,48 @@ size_t heightOfParent(Node<Key, Value> *temp) {
 //    return y;
 //}
 template<typename Key, typename Value>
-size_t balanceFactor(Node<Key, Value> *parent) {
-    if (parent == nullptr) {
-        return 0;
-    } else if (parent->left == nullptr and parent->right == nullptr) {
-        return 0;
+size_t balanceFactor(Node<Key, Value> *currNode) {
+    if (currNode == nullptr) {
+        return -1;
     }
-    return heightOfParent(parent->left) - heightOfParent(parent->right);
+    return getHeight(currNode->left) - getHeight(currNode->right);
+
 }
 
+
+
+
+
+//    if (currNode == nullptr) {
+//        return 0;
+//    }
+//    return heightOfParent(currNode->left) - getHeight(currNode->right);
+//}
+
 template<typename Key, typename Value>
-void rotate(Node<Key, Value> *parent) {
+bool rotate(Node<Key, Value> *currNode) {
+    std::cout << "bf: " << currNode->InOrderID << " " << balanceFactor(currNode) << std::endl;
     // tree is LEFT heavy
-    if (balanceFactor(parent) > 1 and (parent != nullptr)) {
+    if (balanceFactor(currNode) > 2 and (currNode != nullptr)) {
         // tree's LEFT subtree is RIGHT heavy
-        if (balanceFactor(parent->left) < -1 and (parent->left != nullptr)) {
-            leftRightRotation(parent);
+        if (balanceFactor(currNode->left) < -2 and (currNode->left != nullptr)) {
+            rightLeftRotation(currNode);
         } else {
-            rightRightRotation(parent);
+            leftLeftRotation(currNode);
         }
+        return true;
     }
         // tree is RIGHT heavy
-    else if (balanceFactor(parent) < -1 and (parent != nullptr)) {
+    else if (balanceFactor(currNode) < -2 and (currNode != nullptr)) {
         // tree's RIGHT subtree is LEFT heavy
-        if (balanceFactor(parent->right) > 1 and (parent->right != nullptr)) {
-            rightLeftRotation(parent);
+        if (balanceFactor(currNode->right) > 2 and (currNode->right != nullptr)) {
+            leftRightRotation(currNode);
         } else {
-            leftLeftRotation(parent);
+            rightRightRotation(currNode);
         }
+        return true;
     }
+    return false;
 }
 
 template<typename Key, typename Value>
