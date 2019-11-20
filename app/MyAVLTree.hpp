@@ -265,7 +265,6 @@ void MyAVLTree<Key, Value>::addEntry(Node<Key, Value> *currNode, const Key &k, c
 
 template<typename Key, typename Value>
 void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
-    Node<Key, Value> *originalCurrNode = currNode;
     do {
 
 
@@ -278,9 +277,14 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
             Node<Key, Value> *leftChild = currNode->left;
 
             // Left-Left Case: Perform Right Rotation
-            if (leftChild->left != nullptr) {
+            if(leftChild->left->getHeight() > leftChild->right->getHeight()){
                 leftLeftCase(currNode, leftChild);
             }
+
+//            if (leftChild->left != nullptr) {
+//                leftLeftCase(currNode, leftChild);
+//            }
+
                 // Left-Right Case: Perform Left Rotation then Right Rotation
             else {
                 // Left Rotation
@@ -302,9 +306,12 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
             Node<Key, Value> *rightChild = currNode->right;
 
             // Right-Right Case: Perform Left Rotation
-            if (rightChild->right != nullptr) {
+            if (rightChild->right->getHeight() > rightChild->left->getHeight()){
                 rightRightCase(currNode, rightChild);
             }
+//            if (rightChild->right != nullptr) {
+//                rightRightCase(currNode, rightChild);
+//            }
                 // Right-Left Case: Perform Right Rotation then Left Rotation
             else {
                 //right rotation
@@ -325,11 +332,11 @@ void MyAVLTree<Key, Value>::checkBalance(Node<Key, Value> *currNode) {
         // Move upward toward root
 
 
-        originalCurrNode = originalCurrNode->parent;
+        currNode = currNode->parent;
 
 
 
-    } while (originalCurrNode != nullptr);
+    } while (currNode != nullptr);
 }
 
 template<typename Key, typename Value>
