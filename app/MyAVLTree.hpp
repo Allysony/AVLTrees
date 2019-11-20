@@ -417,6 +417,10 @@ void MyAVLTree<Key, Value>::rightRightCase(Node<Key, Value> *currNode, Node<Key,
         root = rightChild;
         rightChild->parent = nullptr;
     }
+    currNode->right = rightChild->left;
+    if (currNode->right != nullptr) {
+        currNode->right->parent = currNode;
+    }
     rightChild->left = currNode;
     currNode->parent = rightChild;
 
