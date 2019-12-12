@@ -144,7 +144,7 @@ bool MyAVLTree<Key, Value>::contains(const Key &k) const {
     while (tmpPtr != nullptr) {
         if (tmpPtr->InOrderID == k) {
             return true;
-        } else if (k > root->InOrderID) {
+        } else if (k > tmpPtr->InOrderID) {
             tmpPtr = tmpPtr->right;
         } else {
             tmpPtr = tmpPtr->left;
@@ -169,7 +169,7 @@ Value &MyAVLTree<Key, Value>::find(const Key &k) {
     while (tmpPtr != nullptr) {
         if (tmpPtr->InOrderID == k) {
             return tmpPtr->data;
-        } else if (k > root->InOrderID) {
+        } else if (k > tmpPtr->InOrderID) {
             tmpPtr = tmpPtr->right;
         } else {
             tmpPtr = tmpPtr->left;
@@ -199,6 +199,7 @@ const Value &MyAVLTree<Key, Value>::find(const Key &k) const {
             tmpPtr = tmpPtr->left;
         }
     }
+    return tmpPtr->data;
 }
 
 
@@ -223,7 +224,7 @@ void MyAVLTree<Key, Value>::addEntry(Node<Key, Value> *currNode, const Key &k, c
 
     // If new value matches object at root of tree/subtree, replace root with new data
     if (k == currNode->InOrderID) {
-        currNode->data = v;
+        currNode->data += v;
     }
         // if new value is smaller than at root
     else if (k < currNode->InOrderID) {
