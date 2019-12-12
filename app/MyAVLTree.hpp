@@ -212,10 +212,7 @@ void MyAVLTree<Key, Value>::insert(const Key &k, const Value &v) {
         addEntry(root, k, v);
 
     }
-    for (int i = 0; i < preOrder().size(); i++) {
-        std::cout << preOrder().at(i) << " ";
-    }
-    std::cout << std::endl;
+
 }
 
 template<typename Key, typename Value>
