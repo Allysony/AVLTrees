@@ -171,4 +171,176 @@ std::cout<<"at keys["<<i<<"] "<<keys[i]<<std::endl;
 EXPECT_TRUE(keys==expected);
 }
 
+TEST(PostCheckPoint, r1)
+{
+MyAVLTree<int, std::string> tree;
+tree.insert(10, "bar");
+tree.insert(12, "twelve");
+tree.insert(15, "fifteen");
+
+std::vector<int> trav = tree.inOrder();
+std::vector<int> expected = {10, 12, 15};
+EXPECT_TRUE( trav == expected );
+}
+
+TEST(PostCheckPoint, r2)
+{
+MyAVLTree<int, std::string> tree;
+tree.insert(5, "foo");
+tree.insert(3, "sna");
+tree.insert(1, "bar");
+
+std::vector<int> trav = tree.inOrder();
+std::vector<int> expected = {1, 3, 5};
+EXPECT_TRUE( trav == expected );
+}
+
+TEST(PostCheckPoint, r3)
+{
+MyAVLTree<int, std::string> tree;
+tree.insert(3, "foo");
+tree.insert(11, "sna");
+tree.insert(10, "bar");
+
+std::vector<int> trav = tree.inOrder();
+std::vector<int> expected = {3, 10, 11};
+EXPECT_TRUE( trav == expected );
+}
+
+TEST(PostCheckPoint, r4)
+{
+MyAVLTree<int, std::string> tree;
+tree.insert(5, "foo");
+tree.insert(3, "sna");
+tree.insert(4, "bar");
+
+std::vector<int> trav = tree.inOrder();
+std::vector<int> expected = {3, 4, 5};
+EXPECT_TRUE( trav == expected );
+}
+
+TEST(PostCheckPoint, rr1)
+{
+MyAVLTree<int, std::string> tree;
+tree.insert(-1, "f");
+tree.insert(-2, "x");
+tree.insert(10, "bar");
+tree.insert(12, "twelve");
+tree.insert(15, "fifteen");
+
+std::vector<int> trav = tree.inOrder();
+std::vector<int> expected = {-2, -1, 10, 12, 15};
+EXPECT_TRUE( trav == expected );
+}
+
+TEST(PostCheckPoint, rr2)
+{
+MyAVLTree<int, std::string> tree;
+tree.insert(-1, "f");
+tree.insert(-2, "x");
+tree.insert(5, "foo");
+tree.insert(3, "sna");
+tree.insert(1, "bar");
+
+std::vector<int> trav = tree.inOrder();
+std::vector<int> expected = {-2, -1, 1, 3, 5};
+EXPECT_TRUE( trav == expected );
+}
+
+TEST(PostCheckPoint, rr3)
+{
+MyAVLTree<int, std::string> tree;
+tree.insert(-1, "f");
+tree.insert(-2, "x");
+tree.insert(3, "foo");
+tree.insert(11, "sna");
+tree.insert(10, "bar");
+
+std::vector<int> trav = tree.inOrder();
+std::vector<int> expected = {-2, -1, 3, 10, 11};
+EXPECT_TRUE( trav == expected );
+}
+
+TEST(PostCheckPoint, rr4)
+{
+MyAVLTree<int, std::string> tree;
+tree.insert(-1, "f");
+tree.insert(-2, "x");
+tree.insert(5, "foo");
+tree.insert(3, "sna");
+tree.insert(4, "bar");
+
+std::vector<int> trav = tree.inOrder();
+std::vector<int> expected = {-2, -1, 3, 4, 5};
+EXPECT_TRUE( trav == expected );
+}
+
+TEST(Hamlet, HamletOpen)
+{
+
+std::ifstream stream;
+stream.open("/home/ics46b/projects/proj3/gtest/hamletopen.txt");
+
+MyAVLTree<std::string, unsigned> tree;
+countWords(stream, tree);
+stream.close();
+
+EXPECT_TRUE(tree.find("marcellus") == 9);
+}
+
+TEST(Hamlet, HamletAct1)
+{
+
+std::ifstream stream;
+stream.open("/home/ics46b/projects/proj3/gtest/hamletact1.txt");
+MyAVLTree<std::string, unsigned> tree;
+
+countWords(stream, tree);
+stream.close();
+EXPECT_TRUE(tree.find("marcellus") == 48);
+}
+TEST(Order, inOrder)
+{
+MyAVLTree<int, std::string> tree;
+for (int i=10;i>4;i--)
+{
+tree.insert(i,"i=");
+}
+
+std::vector keys=tree.inOrder();
+std::vector expected={5,6,7,8,9,10};
+for (int i=0;i<keys.size();i++)
+std::cout<<"at keys["<<i<<"] "<<keys[i]<<std::endl;
+EXPECT_TRUE(keys==expected);
+}
+TEST(Order, postOrder)
+{
+MyAVLTree<int, std::string> tree;
+for (int i=10;i>4;i--)
+{
+tree.insert(i,"i=");
+}
+
+std::vector<int> keys=tree.postOrder();
+std::vector<int> expected={5,6,8,10,9,7};
+
+for (int i=0;i<keys.size();i++)
+std::cout<<"at keys["<<i<<"]  "<<keys[i]<<std::endl;
+EXPECT_TRUE(keys==expected);
+}
+TEST(Order, preOrder)
+{
+MyAVLTree<int, std::string> tree;
+for (int i=10;i>4;i--)
+{
+tree.insert(i,"i=");
+}
+
+std::vector keys=tree.preOrder();
+std::vector expected={7,6,5,9,8,10};
+for (int i=0;i<keys.size();i++)
+std::cout<<"at keys["<<i<<"] "<<keys[i]<<std::endl;
+EXPECT_TRUE(keys==expected);
+}
+
 }
