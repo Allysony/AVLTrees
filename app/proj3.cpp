@@ -28,13 +28,7 @@ void countWords(std::istream &in, MyAVLTree<std::string, unsigned> &counter) {
             word = keepOnlyLetters(word);
             if (word != "")    // "" means no letters got retained.
             {
-
-                if (counter.contains(word)) {
-
-                    counter.find(word)++; // <- this is totally maybe not right
-                } else {
-                    counter.insert(word, 1);
-                }
+                counter.insert(word, 1);
             } else {
                 // In "real program," you don't do anything here.
                 // This output is for your information here.
