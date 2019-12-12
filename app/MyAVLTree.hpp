@@ -199,7 +199,6 @@ const Value &MyAVLTree<Key, Value>::find(const Key &k) const {
             tmpPtr = tmpPtr->left;
         }
     }
-    return tmpPtr->data;
 }
 
 
