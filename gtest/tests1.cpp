@@ -274,6 +274,30 @@ std::vector<int> trav = tree.inOrder();
 std::vector<int> expected = {-2, -1, 3, 4, 5};
 EXPECT_TRUE( trav == expected );
 }
+TEST(Hamlet, HamletOpen)
+{
+
+std::ifstream stream;
+stream.open("/home/ics46b/projects/proj3/gtest/hamletopen.txt");
+
+MyAVLTree<std::string, unsigned> tree;
+countWords(stream, tree);
+stream.close();
+
+EXPECT_TRUE(tree.find("marcellus") == 9);
+}
+
+TEST(Hamlet, HamletAct1)
+{
+
+std::ifstream stream;
+stream.open("/home/ics46b/projects/proj3/gtest/hamletact1.txt");
+MyAVLTree<std::string, unsigned> tree;
+
+countWords(stream, tree);
+stream.close();
+EXPECT_TRUE(tree.find("marcellus") == 48);
+}
 
 
 
